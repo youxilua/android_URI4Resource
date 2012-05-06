@@ -1,7 +1,8 @@
-package com.achai.main;
+package com.achai.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.Toast;
 
 public class UserApp extends Application {
 	
@@ -31,5 +32,13 @@ public class UserApp extends Application {
 	
 	private void init(){
 		activeApp = this;
+	}
+	
+	public void showMessage(String message){
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static void showMessage(Context ctx, String msg){
+		Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
 	}
 }
