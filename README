@@ -1,0 +1,50 @@
+一:命令体系
+1.基于URI的tag写法
+(1) TAG结构组成
+一个完整的tag应该是这样写的
+scheme://host:port/path?query#fragment
+或者
+scheme://userInfo@host:port/path?query#fragment
+
+(2)目前支持以下几种写法
+1, scheme://host/#fragment
+Ex1, 如果只是改变view的状态可以这么写
+view://text/#Hello,World!
+
+Ex2, 执行一个Toast命令
+cmd://hint/#Hello,World!
+
+2,scheme://host/?query#fragment
+Ex3, 指定一个view的状态
+cmd://setview/?id=textview1&amp;attribute=text#Hello,World!
+
+3,scheme://host/#fragment\nscheme://host/?query#fragment
+Ex4, 执行多行命令
+view://text/#Hello,World!\n
+cmd://setview/?attribute=visibility#gone
+
+附录:
+当前支持
+1,scheme
+(1) cmd://host/ 执行一定操作
+	1,host -> hint Toast 显示
+	2,host -> setview 控制指定ID的view状态,没有就控制自身
+	3,host -> finish finish
+
+(2) view://host/#framgent 设置view的状态
+	1, host -> 为android:attribute 其中attribute为将要支持的参数
+	2, fragment -> 为android:attribute=xxx 其中xxx为将要支持的参数
+
+未来支持
+(3) act:// 跳转到某个activity
+
+简单教程
+
+1,setView
+view://界面属性/#值
+界面属性:与android的一致!
+# 的参数 也是与android的一致!
+例如:设置一个view是否可见
+view://visibility/#gone
+
+设置这个tag的view 隐藏了
