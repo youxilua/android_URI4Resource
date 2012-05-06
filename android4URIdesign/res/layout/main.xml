@@ -6,23 +6,40 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/ok"
+        android:id="@+id/ok2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:text="@string/hello" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:tag="cmd://finish"
+        android:tag="cmd://finish"
         android:text="Button" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/ok"
         android:layout_width="wrap_content"
-        android:tag="cmd://hint/#人家害羞!!"
+        android:visibility="visible"
+        android:tag="cmd://hint/#人家害羞!!\n
+        cmd://finish"
         android:layout_height="wrap_content"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="@string/tagCmd1"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="view://text/#哈哈!!!\ncmd://hint/#我勒个去这么神奇!!!\ncmd://setview/?attribute=visibility#gone"
+        android:text="Button" />
 
 </LinearLayout>
