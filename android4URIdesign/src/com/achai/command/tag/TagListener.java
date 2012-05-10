@@ -6,11 +6,21 @@ import java.util.Map;
 import com.achai.app.UserApp;
 import com.achai.utils.AnalyseViewURI;
 
+import android.R.string;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView.OnEditorActionListener;
 
+/**
+ * 初始化 tag 的监听
+ * 
+ * @author tom_achai
+ * 
+ */
 public class TagListener {
 	private final Activity theAct;
 
@@ -115,11 +125,43 @@ public class TagListener {
 	}
 
 	/**
-	 * 执行动作操作
+	 * 执行activity 跳转动作 act://com.achai@com.achai.main.TargetActivity/?id=12345&json=xxxxxxx
+	 * 
+	 * 1,完整包名 getHost();
 	 * 
 	 * @param u
 	 */
 	private void execAct(URI u) {
+		//Intent
+		Intent targetIntent = new Intent();
+		
+		// 目标activity 包名
+		String targetPackageName = u.getUserInfo();
+		// 目标activity 的类名
+		String targetClassName = u.getHost();
+		//
+		if(targetClassName != null){
+			//targetIntent.setClassName(theAct, targetClassName);
+			ComponentName cn = new ComponentName(targetPackageName, targetClassName);
+			targetIntent.setComponent(cn);
+//			targetIntent.setClassName(targetPackageName, "/."+targetClassName);
+		}
+		Bundle bundle = new Bundle();
+		// 进行数据绑定Bundle
+		String query = u.getQuery();
+		if (query != null) {
+			Map<String, String> bundleMap = TagCheck.getMap(query);
+			
+			for (String key : bundleMap.keySet()) {
+				bundle.putString(key, bundleMap.get(key));
+			}
+			targetIntent.putExtras(bundle);
+		}
+		
+		// 执行跳转
+		theAct.startActivity(targetIntent);
+		
+		
 
 	}
 

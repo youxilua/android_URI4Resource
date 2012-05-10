@@ -73,6 +73,8 @@ public class TagSetView {
 		if(attribute.equals("text")){
 			setViewText(v, param);
 		}
+		
+		
 	}
 	
 	private static void setViewText(View v,String param) {
@@ -81,3 +83,4 @@ public class TagSetView {
 	
 	
 }
+
