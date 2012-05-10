@@ -1,4 +1,4 @@
-package com.achai.command;
+package com.achai.command.tag;
 
 import java.net.URI;
 
@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.achai.command.TagListener.TagOnClickEvents;
+import com.achai.command.tag.TagListener.TagOnClickEvents;
 import com.achai.main.ExecuteActivity;
 
-public class InitViewCmd {
+public class InitViewTag {
 	private final ExecuteActivity theAct;
 	private final TagListener tagListener;
 	private final TagOnClickEvents tagClickEvent;
-	public InitViewCmd(ExecuteActivity act){
+	public InitViewTag(ExecuteActivity act){
 		this.theAct = act;
 		tagListener = new TagListener(act);
 		tagClickEvent = new TagOnClickEvents();
