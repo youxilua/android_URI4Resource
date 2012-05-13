@@ -1,4 +1,4 @@
-package com.achai.command.mapview;
+package com.achai.command.viewmap;
 
 /**
  * 用了动态绑定view 的监听事件

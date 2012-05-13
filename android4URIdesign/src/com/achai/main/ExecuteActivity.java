@@ -24,11 +24,9 @@ public class ExecuteActivity extends Activity{
 		//绑定特定的view 的 tag
 		Button b = (Button) findViewById(R.id.button4);
 		//i.setClassName("com.achai", "com.achai.main.TargetActivity");
-		ComponentName cn = new ComponentName("com.achai", "com.achai.main.TargetActivity");
 		
-		i.setComponent(cn);
 		View root = getRootView();
-		initTagCmd.checkTagView(b);
+		initTagCmd.checkTagView(root);
 		
 //		
 //		b.setOnClickListener(new OnClickListener() {

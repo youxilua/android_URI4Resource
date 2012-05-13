@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewDebug.FlagToString;
 import android.widget.TextView.OnEditorActionListener;
 
 /**
@@ -135,6 +136,31 @@ public class TagListener {
 		//Intent
 		Intent targetIntent = new Intent();
 		
+		//PROT 
+		int port = u.getPort();
+		
+		//设定activity 的启动状态
+		if(port != -1){
+			//主要的启动模式
+			switch (port) {
+			//This flag can not be used when the caller is requesting a result from the activity being launched.
+			case 1:
+				targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				break;
+			//clear top
+			//如果启动了A,B,C,D ,D start 了 B 那么在栈里面就只有
+			//A,B
+			case 2:
+				targetIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				break;
+			//If set, the activity will not be launched if it is already running at the top of the history stack.
+			case 3:
+				targetIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				break;
+			default:
+				break;
+			}
+		}
 		// 目标activity 包名
 		String targetPackageName = u.getUserInfo();
 		// 目标activity 的类名

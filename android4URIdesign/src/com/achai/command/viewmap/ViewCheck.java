@@ -1,4 +1,4 @@
-package com.achai.command.mapview;
+package com.achai.command.viewmap;
 
 /**
  * 
