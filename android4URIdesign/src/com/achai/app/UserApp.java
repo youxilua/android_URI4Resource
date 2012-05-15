@@ -34,6 +34,10 @@ public class UserApp extends Application {
 		activeApp = this;
 	}
 	
+	public String getCurPackageName(){
+		return getPackageName();
+	}
+	
 	public void showMessage(String message){
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}

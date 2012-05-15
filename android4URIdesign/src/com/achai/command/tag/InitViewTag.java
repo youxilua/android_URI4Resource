@@ -97,6 +97,12 @@ public class InitViewTag {
 			return; 
 		}
 		
+		//设置向服务器Post数据模块
+		if(TagCheck.isPost(tagUri)){
+			TagSetView.setTagClickListener(v, tagClickEvent);
+			return;
+		}
+		
 
 	}
 }

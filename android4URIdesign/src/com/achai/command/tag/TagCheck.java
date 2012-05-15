@@ -32,7 +32,18 @@ public class TagCheck {
 	
 	public static boolean isCmd(URI tag){
 		if(tag != null){
-			if(tag.getScheme().equals("cmd")){
+			if(tag.getScheme().toLowerCase().equals("cmd")){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isPost(URI tag){
+		if(tag != null){
+			if(tag.getScheme().toLowerCase().equals("post")){
 				return true;
 			}else{
 				return false;
@@ -43,7 +54,7 @@ public class TagCheck {
 	
 	public static boolean isAct(URI tag){
 		if(tag != null){
-			if(tag.getScheme().equals("act")){
+			if(tag.getScheme().toLowerCase().equals("act")){
 				return true;
 			}else{
 				return false;
@@ -62,6 +73,7 @@ public class TagCheck {
 		}
 		return qMap;
 	}
+	
 	
 	
 }
