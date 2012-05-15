@@ -1,3 +1,16 @@
+未来网络部分支持:
+1,post,get
+post://packageName@className:port/?id0=editText1&id1=editText2
+5.14 完成取得视图数据模块
+
+添加一个脚本命令的步骤
+InitViewTag -> TagCheck //这两步是初始化过程
+tagListener
+
+更新:
+1,支持act之间的跳转
+完整命令写法: act://com.achai@com.achai.main.TargetActivity:FLAG/?id=1234&json=xxxx
+
 一:命令体系
 1.基于URI的tag写法
 (1) TAG结构组成
@@ -35,7 +48,6 @@ cmd://setview/?attribute=visibility#gone
 	1, host -> 为android:attribute 其中attribute为将要支持的参数
 	2, fragment -> 为android:attribute=xxx 其中xxx为将要支持的参数
 
-未来支持
 (3) act:// 跳转到某个activity
 
 简单教程
