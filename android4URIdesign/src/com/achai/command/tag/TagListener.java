@@ -46,7 +46,7 @@ public class TagListener {
 		}
 	}
 
-	protected void doExecUrl(View view, String url) {
+	public void doExecUrl(View view, String url) {
 		try {
 			if (TagCheck.needSplit(url)) {
 				String[] urls = url.split("\n");

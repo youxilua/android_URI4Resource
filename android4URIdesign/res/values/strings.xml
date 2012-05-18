@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World!</string>
     <string name="app_name">Android4URIdesign</string>
+    <string name="upload">提交</string>
 	
 </resources>

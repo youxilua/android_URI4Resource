@@ -1,3 +1,27 @@
+5.18 更新:
+支持手动指定某个view执行脚本命令
+例如
+1,在视图里面
+<Button
+        android:onClick="execTags"
+        android:tag="cmd://hint/#Hello,World" 
+ 		<!--一下忽略 -->
+        />
+2,绑定的activity 实现 ExecTagListener 接口
+重写:
+@Override
+	public void execTags(View v) {
+		new TagListener(this).doExecUrl(v, v.getTag().toString());
+	}        
+
+视图引擎:
+
+为view 打上map值
+map:key
+
+//表达式部分
+
+
 未来网络部分支持:
 1,post,get
 post://packageName@className:port/?id0=editText1&id1=editText2
