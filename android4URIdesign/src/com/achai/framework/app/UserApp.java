@@ -1,4 +1,4 @@
-package com.achai.app;
+package com.achai.framework.app;
 
 import android.app.Application;
 import android.content.Context;

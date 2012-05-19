@@ -1,4 +1,4 @@
-package com.achai.command.tag;
+package com.achai.framework.command.tag;
 
 import java.net.URI;
 import java.util.HashMap;

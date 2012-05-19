@@ -1,8 +1,8 @@
-package com.achai.command.tag;
+package com.achai.framework.command.tag;
 
 import java.net.URI;
 
-import com.achai.command.tag.TagListener.TagOnClickEvents;
+import com.achai.framework.command.tag.TagListener.TagOnClickEvents;
 
 import android.view.View;
 import android.widget.TextView;

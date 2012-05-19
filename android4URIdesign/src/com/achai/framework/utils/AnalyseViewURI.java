@@ -1,8 +1,8 @@
-package com.achai.utils;
+package com.achai.framework.utils;
 
 import java.net.URI;
 
-import com.achai.app.UserApp;
+import com.achai.framework.app.UserApp;
 
 import android.content.res.Resources;
 

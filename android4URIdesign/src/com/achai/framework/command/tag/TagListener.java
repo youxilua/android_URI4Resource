@@ -1,12 +1,12 @@
-package com.achai.command.tag;
+package com.achai.framework.command.tag;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.achai.app.UserApp;
-import com.achai.utils.AnalyseViewURI;
+import com.achai.framework.app.UserApp;
+import com.achai.framework.utils.AnalyseViewURI;
 
 import android.R.string;
 import android.app.Activity;
@@ -38,7 +38,7 @@ public class TagListener {
 		public OnEditorActionListener edtEvent;
 	}
 
-	protected void doViewClicked(View v) {
+	public void doViewClicked(View v) {
 		String url = v.getTag().toString().trim();
 		if (v != null && url != null) {
 			// 对view 中tag 进行解析
@@ -46,7 +46,7 @@ public class TagListener {
 		}
 	}
 
-	public void doExecUrl(View view, String url) {
+	protected void doExecUrl(View view, String url) {
 		try {
 			if (TagCheck.needSplit(url)) {
 				String[] urls = url.split("\n");
