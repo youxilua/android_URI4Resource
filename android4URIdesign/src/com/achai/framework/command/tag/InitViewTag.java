@@ -8,13 +8,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.achai.framework.command.tag.TagListener.TagOnClickEvents;
-import com.achai.main.ExecuteActivity;
 
 public class InitViewTag {
-	private final ExecuteActivity theAct;
+	private final Activity theAct;
 	private final TagListener tagListener;
 	private final TagOnClickEvents tagClickEvent;
-	public InitViewTag(ExecuteActivity act){
+	public InitViewTag(Activity act){
 		this.theAct = act;
 		tagListener = new TagListener(act);
 		tagClickEvent = new TagOnClickEvents();

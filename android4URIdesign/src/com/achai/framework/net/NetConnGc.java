@@ -8,7 +8,12 @@ import java.util.List;
 import android.util.Log;
 
 
-public class NetConnUtils {
+/**
+ *网络连接管理
+ * @author tom_achai
+ *
+ */
+public class NetConnGc {
 	public static List<String> recentNetLogs = new ArrayList<String>();
 	public static String lastNetResult = "";
 	public static boolean netReqLogEnabled = true;

@@ -1,4 +1,4 @@
-package com.achai.framework.net;
+package com.achai.framework.deviceinfo;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

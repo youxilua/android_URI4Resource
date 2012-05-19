@@ -1,4 +1,4 @@
-package com.achai.net.framework.fetch;
+package com.achai.framework.net.fetch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
