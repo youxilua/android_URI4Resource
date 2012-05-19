@@ -1,3 +1,5 @@
+
+
 5.18 更新:
 支持手动指定某个view执行脚本命令
 例如
@@ -75,6 +77,8 @@ cmd://setview/?attribute=visibility#gone
 (3) act:// 跳转到某个activity
 
 简单教程
+博客:
+http://www.cnblogs.com/youxilua/archive/2012/05/06/2485975.html
 
 1,setView
 view://界面属性/#值

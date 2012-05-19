@@ -108,6 +108,8 @@ public class TagListener {
 			Log.d("tagpost", string);
 		}
 		
+		UserApp.showMessage(theAct, paramString.toString());
+		
 	}
 
 	/**
