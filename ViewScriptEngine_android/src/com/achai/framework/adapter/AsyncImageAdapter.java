@@ -17,6 +17,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.achai.framework.R;
+import com.achai.framework.image.ImageWorker;
 import com.achai.framework.net.fetch.DataFetch;
 
 public class AsyncImageAdapter extends BaseAdapter {
@@ -38,6 +40,9 @@ public class AsyncImageAdapter extends BaseAdapter {
 	private List<? extends Map<String, ?>> mData;
 
 	private Context mContext;
+
+	// 异步加载图片
+	private ImageWorker mImageWorker;
 
 	//
 	// public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>>
@@ -68,6 +73,9 @@ public class AsyncImageAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.mResource = resource;
 		this.mContext = ctx;
+		mImageWorker = new ImageWorker(ctx);
+		mImageWorker.setLoadingImage(R.drawable.ic_launcher);
+		
 	}
 
 	@Override
@@ -176,20 +184,9 @@ public class AsyncImageAdapter extends BaseAdapter {
 	}
 
 	private void setViewImage(ImageView view, String text) {
-//		if (text.startsWith("http://")) {
-//			// 这里需要一个异步操作
-//			File imageFile = DataFetch.dowanLoadBitmap(mContext, text);
-//			Bitmap img;
-//			try {
-//				img = BitmapFactory
-//						.decodeStream(new FileInputStream(imageFile));
-//				view.setImageBitmap(img);
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//		}
+		if (text.startsWith("http://") ||text.startsWith("https://")) {
+			mImageWorker.loadImage(text, view);
+		}
 	}
 
 	private void setViewImage(ImageView view, Integer data) {
