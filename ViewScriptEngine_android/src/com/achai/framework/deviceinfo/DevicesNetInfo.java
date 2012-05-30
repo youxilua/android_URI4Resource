@@ -1,5 +1,7 @@
 package com.achai.framework.deviceinfo;
 
+import com.achai.framework.app.UserApp;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -68,7 +70,7 @@ public class DevicesNetInfo {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
-            Toast.makeText(context, "No network connection found.", Toast.LENGTH_LONG).show();
+          UserApp.showMessage(context, "当前无网络连接");
         }
     }
 }
