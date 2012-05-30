@@ -3,6 +3,8 @@ package com.achai.framework.deviceinfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * 需要权限
@@ -55,4 +57,18 @@ public class DevicesNetInfo {
 		return (networkInfo != null && networkInfo.isConnected());
 
 	}
+	
+    /**
+     * Simple network connection check.
+     *
+     * @param context
+     */
+    public static void checkConnection(Context context) {
+        final ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
+            Toast.makeText(context, "No network connection found.", Toast.LENGTH_LONG).show();
+        }
+    }
 }

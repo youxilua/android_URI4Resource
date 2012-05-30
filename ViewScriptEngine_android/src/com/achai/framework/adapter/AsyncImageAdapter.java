@@ -1,8 +1,5 @@
 package com.achai.framework.adapter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.achai.framework.R;
-import com.achai.framework.image.ImageWorker;
-import com.achai.framework.net.fetch.DataFetch;
+import com.achai.framework.cache.ImageCache;
+import com.achai.framework.image.ImageFetcher;
 
 public class AsyncImageAdapter extends BaseAdapter {
 
@@ -28,6 +24,9 @@ public class AsyncImageAdapter extends BaseAdapter {
 
 	// 返回的布局id
 	private int mResource;
+
+	protected int mImageWidth = 100;
+	protected int mImageHeight = 100;
 
 	// viewhorder
 	private ViewHolder mHolder;
@@ -42,7 +41,12 @@ public class AsyncImageAdapter extends BaseAdapter {
 	private Context mContext;
 
 	// 异步加载图片
-	private ImageWorker mImageWorker;
+	private ImageFetcher mImageWorker;
+
+	// 加载用的图片
+	private int asyncResid;
+
+	private Bitmap mLoadingBitmap;
 
 	//
 	// public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>>
@@ -73,9 +77,33 @@ public class AsyncImageAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.mResource = resource;
 		this.mContext = ctx;
-		mImageWorker = new ImageWorker(ctx);
-		mImageWorker.setLoadingImage(R.drawable.ic_launcher);
-		
+
+	}
+	
+	/**如果需要预览图片的需要自行设置
+	 * @param ctx
+	 * @param data
+	 * @param resource
+	 * @param to
+	 * @param loadingimage
+	 */
+	public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>> data,
+			int resource, int[] to,int loadingimage) {
+		this.mData = data;
+		this.mTo = to;
+		this.mInflater = (LayoutInflater) ctx
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.mResource = resource;
+		this.mContext = ctx;
+		setLoadingImage(loadingimage);
+
+	}
+	public void setLoadingImage(int resid) {
+		mLoadingBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				resid);
+		// 根据预览图片设置
+		setImageSize(mLoadingBitmap.getWidth(), mLoadingBitmap.getHeight());
+		mImageWorker = new ImageFetcher(mContext, mImageWidth, mImageHeight);
 	}
 
 	@Override
@@ -184,7 +212,7 @@ public class AsyncImageAdapter extends BaseAdapter {
 	}
 
 	private void setViewImage(ImageView view, String text) {
-		if (text.startsWith("http://") ||text.startsWith("https://")) {
+		if (text.startsWith("http://") || text.startsWith("https://")) {
 			mImageWorker.loadImage(text, view);
 		}
 	}
@@ -195,17 +223,6 @@ public class AsyncImageAdapter extends BaseAdapter {
 
 	private void setViewText(TextView view, String data) {
 		view.setText(data);
-	}
-
-	/**
-	 * 对图片预先缩放
-	 * 
-	 * @param bitmap
-	 * @param imageView
-	 */
-	private void autoScale(Bitmap bitmap, ImageView imageView) {
-		bitmap = Bitmap.createScaledBitmap(bitmap, imageView.getWidth(),
-				imageView.getHeight(), true);
 	}
 
 	/**
@@ -260,4 +277,18 @@ public class AsyncImageAdapter extends BaseAdapter {
 
 	}
 
+	/**
+	 * 设置目标图片大小
+	 * 
+	 * @param width
+	 * @param height
+	 */
+	public void setImageSize(int width, int height) {
+		mImageWidth = width;
+		mImageHeight = height;
+	}
+	
+	public void setImageCache(ImageCache imagecache){
+		mImageWorker.setImageCache(imagecache);
+	}
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
@@ -53,109 +54,137 @@ public class ImageCache {
 	public ImageCache(Context context, String uniqueName) {
 		init(context, new ImageCacheParams(uniqueName));
 	}
-	
+
 	/**
-	 * 暂时想不到怎么改...
+	 * 
+	 * 要3.0 或者 加了 support v4 才能使用
+	 * 
 	 * @return
 	 */
-	public static ImageCache findOrCreateCache(){
-		return null;
+	public static ImageCache findOrCreateCache(final FragmentActivity activity,
+			final String uniqueName) {
+		return findOrCreateCache(activity, new ImageCacheParams(uniqueName));
 	}
-	
-	
-	
+
+	public static ImageCache findOrCreateCache(final FragmentActivity activity,
+			ImageCacheParams cacheParams) {
+
+		// Search for, or create an instance of the non-UI RetainFragment
+		final RetainFragment mRetainFragment = RetainFragment
+				.findOrCreateRetainFragment(activity
+						.getSupportFragmentManager());
+
+		// See if we already have an ImageCache stored in RetainFragment
+		ImageCache imageCache = (ImageCache) mRetainFragment.getObject();
+
+		// No existing ImageCache, create one and store it in RetainFragment
+		if (imageCache == null) {
+			imageCache = new ImageCache(activity, cacheParams);
+			mRetainFragment.setObject(imageCache);
+		}
+
+		return imageCache;
+	}
 
 	/**
 	 * 初始化图片缓存模块
+	 * 
 	 * @param context
 	 * @param cacheParams
 	 */
 	private void init(Context context, ImageCacheParams cacheParams) {
-		//获得缓存目录
-		final File diskCacheDir = DiskLruCache.getDiskCacheDir(context, cacheParams.uniqueName);
-		
+		// 获得缓存目录
+		final File diskCacheDir = DiskLruCache.getDiskCacheDir(context,
+				cacheParams.uniqueName);
+
 		// Set up disk cache
-        if (cacheParams.diskCacheEnabled) {
-            mDiskCache = DiskLruCache.openCache(context, diskCacheDir, cacheParams.diskCacheSize);
-            mDiskCache.setCompressParams(cacheParams.compressFormat, cacheParams.compressQuality);
-            if (cacheParams.clearDiskCacheOnStart) {
-                mDiskCache.clearCache();
-            }
-        }
-        
-        // Set up memory cache
-        if (cacheParams.memoryCacheEnabled) {
-            mMemoryCache = new LruCache<String, Bitmap>(cacheParams.memCacheSize) {
-                /**
-                 * Measure item size in bytes rather than units which is more practical for a bitmap
-                 * cache
-                 */
-                @Override
-                protected int sizeOf(String key, Bitmap bitmap) {
-                    return CacheUtils.getBitmapSize(bitmap);
-                }
-            };
-        }
+		if (cacheParams.diskCacheEnabled) {
+			mDiskCache = DiskLruCache.openCache(context, diskCacheDir,
+					cacheParams.diskCacheSize);
+			mDiskCache.setCompressParams(cacheParams.compressFormat,
+					cacheParams.compressQuality);
+			if (cacheParams.clearDiskCacheOnStart) {
+				mDiskCache.clearCache();
+			}
+		}
+
+		// Set up memory cache
+		if (cacheParams.memoryCacheEnabled) {
+			mMemoryCache = new LruCache<String, Bitmap>(
+					cacheParams.memCacheSize) {
+				/**
+				 * Measure item size in bytes rather than units which is more
+				 * practical for a bitmap cache
+				 */
+				@Override
+				protected int sizeOf(String key, Bitmap bitmap) {
+					return CacheUtils.getBitmapSize(bitmap);
+				}
+			};
+		}
 	}
-	
-    /**
-     * 添加一张图片到内存当中
-     * @param data
-     * @param bitmap
-     */
-    public void addBitmapToCache(String data, Bitmap bitmap) {
-        if (data == null || bitmap == null) {
-            return;
-        }
 
-        // Add to memory cache
-        if (mMemoryCache != null && mMemoryCache.get(data) == null) {
-            mMemoryCache.put(data, bitmap);
-        }
+	/**
+	 * 添加一张图片到内存当中
+	 * 
+	 * @param data
+	 * @param bitmap
+	 */
+	public void addBitmapToCache(String data, Bitmap bitmap) {
+		if (data == null || bitmap == null) {
+			return;
+		}
 
-        // Add to disk cache
-        if (mDiskCache != null && !mDiskCache.containsKey(data)) {
-            mDiskCache.put(data, bitmap);
-        }
-    }
-	
-    
-    /**
-     * Get from memory cache.
-     *
-     * @param data Unique identifier for which item to get
-     * @return The bitmap if found in cache, null otherwise
-     */
-    public Bitmap getBitmapFromMemCache(String data) {
-        if (mMemoryCache != null) {
-            final Bitmap memBitmap = mMemoryCache.get(data);
-            if (memBitmap != null) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Memory cache hit");
-                }
-                return memBitmap;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Get from disk cache.
-     *
-     * @param data Unique identifier for which item to get
-     * @return The bitmap if found in cache, null otherwise
-     */
-    public Bitmap getBitmapFromDiskCache(String data) {
-        if (mDiskCache != null) {
-            return mDiskCache.get(data);
-        }
-        return null;
-    }
-    
-    public void clearCaches() {
-        mDiskCache.clearCache();
-        mMemoryCache.evictAll();
-    }
+		// Add to memory cache
+		if (mMemoryCache != null && mMemoryCache.get(data) == null) {
+			mMemoryCache.put(data, bitmap);
+		}
+
+		// Add to disk cache
+		if (mDiskCache != null && !mDiskCache.containsKey(data)) {
+			mDiskCache.put(data, bitmap);
+		}
+	}
+
+	/**
+	 * Get from memory cache.
+	 * 
+	 * @param data
+	 *            Unique identifier for which item to get
+	 * @return The bitmap if found in cache, null otherwise
+	 */
+	public Bitmap getBitmapFromMemCache(String data) {
+		if (mMemoryCache != null) {
+			final Bitmap memBitmap = mMemoryCache.get(data);
+			if (memBitmap != null) {
+				if (BuildConfig.DEBUG) {
+					Log.d(TAG, "Memory cache hit");
+				}
+				return memBitmap;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get from disk cache.
+	 * 
+	 * @param data
+	 *            Unique identifier for which item to get
+	 * @return The bitmap if found in cache, null otherwise
+	 */
+	public Bitmap getBitmapFromDiskCache(String data) {
+		if (mDiskCache != null) {
+			return mDiskCache.get(data);
+		}
+		return null;
+	}
+
+	public void clearCaches() {
+		mDiskCache.clearCache();
+		mMemoryCache.evictAll();
+	}
+
 	/**
 	 * A holder class that contains cache parameters.
 	 */

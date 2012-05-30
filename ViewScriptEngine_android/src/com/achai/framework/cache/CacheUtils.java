@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -17,13 +18,16 @@ public class CacheUtils {
 	public static final String SHARED_CACHE_DEFAULT = "string_cache";
 	public static final String TRACE_LOGS = "graphviz_log";
 	public static final int TRACE_LOGS_SIZE = 10 * 1024 * 1024; // 10MB
-	
-	//dot 文件
+
+	// dot 文件
 	public static final String DOT_CACHE_DIR = "dot";
 	public static final int DOT_CACHE_FILE_SIZE = 10 * 1024; // 1MB
-	
-	//默认缓存大小
+
+	// 默认缓存大小
 	public static final int DEFAULT_CACHE_FILE_SIZE = 10 * 512; // 512 kb
+
+	// 默认图片目录
+	public static final String IMAGE_CACHE_DIR = "thumbs";
 
 	// 8k 缓存
 	public static final int IO_BUFFER_SIZE = 8 * 1024;
@@ -40,19 +44,19 @@ public class CacheUtils {
 	 */
 	@SuppressLint("NewApi")
 	public static long getUsableSpace(File path) {
-//		 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-//		 return path.getUsableSpace();
-//		 }
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		// return path.getUsableSpace();
+		// }
 		final StatFs stats = new StatFs(path.getPath());
 		return (long) stats.getBlockSize() * (long) stats.getAvailableBlocks();
 	}
 
 	/**
-	 * Check if external storage is built-in or removable.
-	 * 2.3 以后的手机可以区分 内部大容量存储器 和 外部
-	 * 内部为不可移除这样更保证我们程序缓存的稳定性
+	 * Check if external storage is built-in or removable. 2.3 以后的手机可以区分
+	 * 内部大容量存储器 和 外部 内部为不可移除这样更保证我们程序缓存的稳定性
 	 * 
 	 * 注意! 2.3 以前没这个特性...蛋疼..
+	 * 
 	 * @return True if external storage is removable (like an SD card), false
 	 *         otherwise.
 	 */
@@ -62,8 +66,8 @@ public class CacheUtils {
 		// return Environment.isExternalStorageRemovable();
 		// }
 		// 2.3 以后才支持的参数
-		
-		//返回false 强制使用外部存储器
+
+		// 返回false 强制使用外部存储器
 		return false;
 	}
 
@@ -140,26 +144,39 @@ public class CacheUtils {
 			}
 		} catch (Exception ex) {
 		}
-		
-		//实现二
-//		  int b;
-//          while ((b = in.read()) != -1) {
-//              out.write(b);
-//          }
+
+		// 实现二
+		// int b;
+		// while ((b = in.read()) != -1) {
+		// out.write(b);
+		// }
 
 	}
+
+	/**
+	 * Get the size in bytes of a bitmap.
+	 * 
+	 * @param bitmap
+	 * @return size in bytes
+	 */
+	@SuppressLint("NewApi")
+	public static int getBitmapSize(Bitmap bitmap) {
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+		// return bitmap.getByteCount();
+		// }
+		// Pre HC-MR1
+		return bitmap.getRowBytes() * bitmap.getHeight();
+	}
 	
-	 /**
-     * Get the size in bytes of a bitmap.
-     * @param bitmap
-     * @return size in bytes
+    /**
+     * Get the memory class of this device (approx. per-app memory limit)
+     *
+     * @param context
+     * @return
      */
-    @SuppressLint("NewApi")
-    public static int getBitmapSize(Bitmap bitmap) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-//            return bitmap.getByteCount();
-//        }
-        // Pre HC-MR1
-        return bitmap.getRowBytes() * bitmap.getHeight();
+ 
+    public static int getMemoryClass(Context context) {
+        return ((ActivityManager) context.getSystemService(
+                Context.ACTIVITY_SERVICE)).getMemoryClass();
     }
 }
