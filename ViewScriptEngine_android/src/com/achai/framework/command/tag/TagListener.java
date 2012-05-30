@@ -222,10 +222,11 @@ public class TagListener {
 				targetIntent.setComponent(cn);
 			}
 		}
-		Bundle bundle = new Bundle();
+	
 		// 进行数据绑定Bundle
 		String query = u.getQuery();
 		if (query != null) {
+			Bundle bundle = new Bundle();
 			Map<String, String> bundleMap = TagCheck.getMap(query);
 
 			for (String key : bundleMap.keySet()) {

@@ -17,7 +17,9 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.SparseArray;
 
+import com.achai.framework.app.UserApp;
 import com.achai.framework.cache.CacheUtils;
 import com.achai.framework.cache.DiskLruCache;
 import com.achai.framework.debug.BuildConfig;
@@ -36,10 +38,13 @@ public class DataFetch {
 	 * @param urlString
 	 * @return
 	 */
-	public static JSONObject getJsonData(String urlString) {
+	public static JSONObject getJsonData(Context ctx, String urlString) {
+		
+//		SparseArray<String> is = new 
+		
 		JSONObject result = null;
 		String temp = null;
-		temp = getStringData(urlString);
+		temp = findString(ctx, urlString);
 		if (temp != null) {
 			try {
 				result = new JSONObject(temp);
@@ -51,14 +56,32 @@ public class DataFetch {
 		}
 		return null;
 	}
+	
+	public static String findString(Context ctx, String url){
+		String key = url;
+		String value = UserApp.sharedCache.getCache(ctx, key);
+		//找缓存里面有没有,没有从url 里面获取
+		if(value != null){
+			Log.d("fetch", "string have found");
+			return value;
+		}else{
+			Log.d("fetch", "string from net");
+			value = getStringData(url);
+			if (value != null) {
+				UserApp.sharedCache.setSharedCache(ctx, key, value);
+				return value;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 获得字符串对象
-	 * 
+	 * 准备支持从数据库读取
 	 * @param urlString
 	 * @return
 	 */
-	public static String getStringData(String urlString) {
+	private static String getStringData(String urlString) {
 		BufferedReader buffer = null;
 		StringBuffer tempString = new StringBuffer();
 		String readline;
@@ -73,6 +96,7 @@ public class DataFetch {
 			while ((readline = buffer.readLine()) != null) {
 				tempString.append(readline);
 			}
+			//写进缓存里面;
 			return tempString.toString();
 		} catch (IOException e) {
 			e.printStackTrace();

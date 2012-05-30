@@ -14,6 +14,16 @@ import android.os.StatFs;
 public class CacheUtils {
 	public static final int HTTP_CACHE_SIZE = 10 * 1024 * 1024; // 10MB
 	public static final String HTTP_CACHE_DIR = "http";
+	public static final String SHARED_CACHE_DEFAULT = "string_cache";
+	public static final String TRACE_LOGS = "graphviz_log";
+	public static final int TRACE_LOGS_SIZE = 10 * 1024 * 1024; // 10MB
+	
+	//dot 文件
+	public static final String DOT_CACHE_DIR = "dot";
+	public static final int DOT_CACHE_FILE_SIZE = 10 * 1024; // 1MB
+	
+	//默认缓存大小
+	public static final int DEFAULT_CACHE_FILE_SIZE = 10 * 512; // 512 kb
 
 	// 8k 缓存
 	public static final int IO_BUFFER_SIZE = 8 * 1024;
