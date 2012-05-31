@@ -104,6 +104,7 @@ public class AsyncImageAdapter extends BaseAdapter {
 		// 根据预览图片设置
 		setImageSize(mLoadingBitmap.getWidth(), mLoadingBitmap.getHeight());
 		mImageWorker = new ImageFetcher(mContext, mImageWidth, mImageHeight);
+		mImageWorker.setLoadingImage(mLoadingBitmap);
 	}
 
 	@Override
