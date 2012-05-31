@@ -22,14 +22,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="act://com.achai@com.achai.main.SecondActivity"
-                android:text="act://" />
+                android:text="act://nomemorycache" />
 
             <Button
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="act://com.achai@com.achai.main.ShowImageHaveImagecache"
-                android:text="act://imagecache" />
+                android:text="act://haveimagememorycache" />
 
             <TextView
                 android:id="@+id/ok2"
