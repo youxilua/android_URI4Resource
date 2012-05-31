@@ -41,8 +41,11 @@ public class SecondActivity extends ListActivity {
 //						R.id.textView2 });
 		
 		AsyncImageAdapter aia = new AsyncImageAdapter(this, map_list,
-				R.layout.tag_listview_item,null,R.drawable.ic_launcher);
+				R.layout.tag_listview_item,R.drawable.ic_launcher);
+		
 		setListAdapter(aia);
+		
+		
 
 	}
 

@@ -35,13 +35,14 @@ public class ShowImageHaveImagecache extends FragmentActivity {
 		}
 
 		AsyncImageAdapter aia = new AsyncImageAdapter(this, map_list,
-				R.layout.tag_listview_item, null, R.drawable.ic_launcher);
+				R.layout.tag_listview_item,  R.drawable.empty_photo);
 		ImageCacheParams cacheParams = new ImageCacheParams(
 				CacheUtils.IMAGE_CACHE_DIR);
 		cacheParams.memCacheSize = 1024 * 1024 * CacheUtils
 				.getMemoryClass(this) / 3;
 		aia.setImageCache(ImageCache.findOrCreateCache(this, cacheParams));
-
+//		lv.
 		lv.setAdapter(aia);
+		
 	}
 }
