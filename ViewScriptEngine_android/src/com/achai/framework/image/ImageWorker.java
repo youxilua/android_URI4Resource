@@ -31,6 +31,10 @@ public abstract class ImageWorker {
 	private Bitmap mLoadingBitmap;
 	// 淡出图片
 	private boolean mFadeInBitmap = true;
+	public void setmFadeInBitmap(boolean mFadeInBitmap) {
+		this.mFadeInBitmap = mFadeInBitmap;
+	}
+
 	// 是否尽早推出task任务
 	private boolean mExitTasksEarly = false;
 	protected Context mContext;

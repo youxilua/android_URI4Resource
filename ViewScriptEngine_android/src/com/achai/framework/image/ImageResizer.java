@@ -102,11 +102,20 @@ public class ImageResizer extends ImageWorker {
 		return BitmapFactory.decodeResource(res, resId, options);
 	}
 
+	/**
+	 * 返回一个正方形的图片大小
+	 * @param options
+	 * @param reqWidth
+	 * @param reqHeight
+	 * @return
+	 */
 	public static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
 		// Raw height and width of image
 		final int height = options.outHeight;
 		final int width = options.outWidth;
+//		final int height = options.outHeight;
+//		final int width = options.outWidth;
 		int inSampleSize = 1;
 
 		if (height > reqHeight || width > reqWidth) {

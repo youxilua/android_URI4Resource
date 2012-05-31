@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,11 @@ public class AsyncImageAdapter extends BaseAdapter {
 
 	private Bitmap mLoadingBitmap;
 
+	/**
+	 * 是否进行缩放
+	 */
+	private boolean mScale = false;
+
 	//
 	// public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>>
 	// data,
@@ -79,8 +85,10 @@ public class AsyncImageAdapter extends BaseAdapter {
 		this.mContext = ctx;
 
 	}
-	
-	/**如果需要预览图片的需要自行设置
+
+	/**
+	 * 如果需要预览图片的需要自行设置
+	 * 
 	 * @param ctx
 	 * @param data
 	 * @param resource
@@ -88,9 +96,8 @@ public class AsyncImageAdapter extends BaseAdapter {
 	 * @param loadingimage
 	 */
 	public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>> data,
-			int resource, int[] to,int loadingimage) {
+			int resource, int loadingimage) {
 		this.mData = data;
-		this.mTo = to;
 		this.mInflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.mResource = resource;
@@ -98,12 +105,45 @@ public class AsyncImageAdapter extends BaseAdapter {
 		setLoadingImage(loadingimage);
 
 	}
+	
+	/**
+	 * 填写需要缩放的大小
+	 * @param ctx
+	 * @param data
+	 * @param resource
+	 * @param loadingimage
+	 * @param widht
+	 * @param height
+	 */
+	public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>> data,
+			int resource, int loadingimage, int widht, int height) {
+		this.mData = data;
+		this.mInflater = (LayoutInflater) ctx
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.mResource = resource;
+		this.mContext = ctx;
+		setScaleModle(widht, height);
+		setLoadingImage(loadingimage);
+
+	}
+	
+	
+	
+
 	public void setLoadingImage(int resid) {
 		mLoadingBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				resid);
 		// 根据预览图片设置
-		setImageSize(mLoadingBitmap.getWidth(), mLoadingBitmap.getHeight());
-		mImageWorker = new ImageFetcher(mContext, mImageWidth, mImageHeight);
+		if(mScale){
+			mImageWorker = new ImageFetcher(mContext, mImageWidth,
+					mImageHeight);
+			mImageWorker.setmNeedScale(mScale);
+			mLoadingBitmap = Bitmap.createScaledBitmap(mLoadingBitmap, mImageWidth, mImageHeight, true);
+		}else{
+			mImageWorker = new ImageFetcher(mContext, mLoadingBitmap.getWidth(),
+					mLoadingBitmap.getHeight());
+		}
+	
 		mImageWorker.setLoadingImage(mLoadingBitmap);
 	}
 
@@ -215,6 +255,7 @@ public class AsyncImageAdapter extends BaseAdapter {
 	private void setViewImage(ImageView view, String text) {
 		if (text.startsWith("http://") || text.startsWith("https://")) {
 			mImageWorker.loadImage(text, view);
+
 		}
 	}
 
@@ -288,8 +329,18 @@ public class AsyncImageAdapter extends BaseAdapter {
 		mImageWidth = width;
 		mImageHeight = height;
 	}
-	
-	public void setImageCache(ImageCache imagecache){
+
+	public void setImageCache(ImageCache imagecache) {
 		mImageWorker.setImageCache(imagecache);
+	}
+
+	public void setFadin(boolean isFadin) {
+		mImageWorker.setmFadeInBitmap(isFadin);
+	}
+
+	private void setScaleModle(int width, int height) {
+		this.mScale = true;
+		mImageWidth = width;
+		mImageHeight = height;
 	}
 }
