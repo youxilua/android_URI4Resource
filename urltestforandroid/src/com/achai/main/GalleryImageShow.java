@@ -11,6 +11,13 @@ import com.example.android.bitmapfun.provider.Images;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Bitmap.Config;
+import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Gallery;
@@ -25,12 +32,15 @@ public class GalleryImageShow extends FragmentActivity {
 		setContentView(R.layout.gallery_image_view);
 //		setContentView(R.layout.gallery_item);
 //		ImageView iv = (ImageView) findViewById(R.id.imageView1);
-//		Bitmap m = BitmapFactory.decodeResource(getResources(),
+//		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
 //				R.drawable.aaa);
-//		// 根据预览图片设置
-//		m =  Bitmap.createScaledBitmap(m, 480, 320, true);
+		// 根据预览图片设置
+//		bitmap =  Bitmap.createScaledBitmap(bitmap, 480, 320, true);
+		
+		
+//		Bitmap output = setImageRound(bitmap);
 ////		
-//		iv.setImageBitmap(m);
+//		iv.setImageBitmap(output);
 		String [] test = Images.imageThumbUrls;
 		List<Map<String, String>> map_list = new ArrayList<Map<String, String>>();
 		for (int i = 0; i < test.length; i++) {
@@ -39,14 +49,22 @@ public class GalleryImageShow extends FragmentActivity {
 			m.put("imageurl", test[i]);
 			map_list.add(m);
 		}
-		
+//		
 		Gallery g  = (Gallery) findViewById(R.id.gallery1);
-		Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.empty_photo);
+//		Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.empty_photo);
+//		
 		
-		AsyncImageAdapter imageAdapter = new AsyncImageAdapter(this, map_list, R.layout.gallery_item,R.drawable.empty_photo,480,320);
+		//开启完全自定义模式
+		AsyncImageAdapter imageAdapter = new AsyncImageAdapter(this, map_list, R.layout.gallery_item);
+		imageAdapter.setScaleModle(480, 200);
+		imageAdapter.setLoadingImage(R.drawable.empty_photo);
+	
 		imageAdapter.setFadin(false);
-		//	imageAdapter.setImageSize(200, 200);
+//		imageAdapter.set
+		imageAdapter.setRound(100);
 		g.setAdapter(imageAdapter);
 	}
+	
+
 
 }

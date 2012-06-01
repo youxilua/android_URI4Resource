@@ -8,7 +8,7 @@
          android:id="@+id/imageView1"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:background="@android:color/white"
+         android:background="@drawable/shapcore"
          android:src="@drawable/empty_photo"
          android:tag="imageurl" />
 

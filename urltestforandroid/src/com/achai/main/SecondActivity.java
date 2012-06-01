@@ -42,6 +42,7 @@ public class SecondActivity extends ListActivity {
 		
 		AsyncImageAdapter aia = new AsyncImageAdapter(this, map_list,
 				R.layout.tag_listview_item,R.drawable.ic_launcher);
+		aia.setRound(100);
 		
 		setListAdapter(aia);
 		

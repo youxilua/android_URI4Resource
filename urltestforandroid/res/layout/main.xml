@@ -21,6 +21,7 @@
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                 android:onClick="execTags"
                 android:tag="act://com.achai@com.achai.main.SecondActivity"
                 android:text="act://nomemorycache" />
 
@@ -28,6 +29,7 @@
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                 android:onClick="execTags"
                 android:tag="act://com.achai@com.achai.main.ShowImageHaveImagecache"
                 android:text="act://haveimagememorycache" />
             
