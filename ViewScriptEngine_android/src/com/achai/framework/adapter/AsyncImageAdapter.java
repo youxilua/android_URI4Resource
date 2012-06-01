@@ -7,6 +7,13 @@ import java.util.Map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Bitmap.Config;
+import android.graphics.PorterDuff.Mode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +33,8 @@ public class AsyncImageAdapter extends BaseAdapter {
 	// 返回的布局id
 	private int mResource;
 
-	protected int mImageWidth = 100;
-	protected int mImageHeight = 100;
+	protected int mImageWidth = 400;
+	protected int mImageHeight = 400;
 
 	// viewhorder
 	private ViewHolder mHolder;
@@ -53,18 +60,6 @@ public class AsyncImageAdapter extends BaseAdapter {
 	 * 是否进行缩放
 	 */
 	private boolean mScale = false;
-
-	//
-	// public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>>
-	// data,
-	// int resource, String[] from, int[] to) {
-	// this.mData = data;
-	// this.mFrom = from;
-	// this.mTo = to;
-	// this.mInflater = (LayoutInflater) ctx
-	// .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	// this.mResource = resource;
-	// }
 
 	/**
 	 * 直接在view上面绑定key的时候用 当 to为null 的时候,启动tag -key模式,这个模式的list item
@@ -105,9 +100,26 @@ public class AsyncImageAdapter extends BaseAdapter {
 		setLoadingImage(loadingimage);
 
 	}
+	/**自定义模式,需要自行设置宽高,预览图等参数
+	 * @param ctx
+	 * @param data
+	 * @param resource
+	 */
+	public AsyncImageAdapter(Context ctx, List<? extends Map<String, ?>> data,
+			int resource) {
+		this.mData = data;
+		this.mInflater = (LayoutInflater) ctx
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.mResource = resource;
+		this.mContext = ctx;
+		mImageWorker = new ImageFetcher(ctx, mImageWidth, mImageHeight);
+	}
 	
+	
+
 	/**
 	 * 填写需要缩放的大小
+	 * 
 	 * @param ctx
 	 * @param data
 	 * @param resource
@@ -126,24 +138,22 @@ public class AsyncImageAdapter extends BaseAdapter {
 		setLoadingImage(loadingimage);
 
 	}
-	
-	
-	
 
 	public void setLoadingImage(int resid) {
 		mLoadingBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				resid);
 		// 根据预览图片设置
-		if(mScale){
-			mImageWorker = new ImageFetcher(mContext, mImageWidth,
-					mImageHeight);
+		if (mScale) {
+			mImageWorker = new ImageFetcher(mContext, mImageWidth, mImageHeight);
 			mImageWorker.setmNeedScale(mScale);
-			mLoadingBitmap = Bitmap.createScaledBitmap(mLoadingBitmap, mImageWidth, mImageHeight, true);
-		}else{
-			mImageWorker = new ImageFetcher(mContext, mLoadingBitmap.getWidth(),
-					mLoadingBitmap.getHeight());
+			mImageWorker.setImageSize(mImageWidth, mImageHeight);
+			mLoadingBitmap = Bitmap.createScaledBitmap(mLoadingBitmap,
+					mImageWidth, mImageHeight, true);
+		} else {
+			mImageWorker = new ImageFetcher(mContext,
+					mLoadingBitmap.getWidth(), mLoadingBitmap.getHeight());
 		}
-	
+
 		mImageWorker.setLoadingImage(mLoadingBitmap);
 	}
 
@@ -326,8 +336,9 @@ public class AsyncImageAdapter extends BaseAdapter {
 	 * @param height
 	 */
 	public void setImageSize(int width, int height) {
-		mImageWidth = width;
-		mImageHeight = height;
+		if(mImageWorker != null){
+			mImageWorker.setImageSize(width, height);
+		}
 	}
 
 	public void setImageCache(ImageCache imagecache) {
@@ -338,9 +349,20 @@ public class AsyncImageAdapter extends BaseAdapter {
 		mImageWorker.setmFadeInBitmap(isFadin);
 	}
 
-	private void setScaleModle(int width, int height) {
+	public void setScaleModle(int width, int height) {
 		this.mScale = true;
 		mImageWidth = width;
 		mImageHeight = height;
+		if(mImageWorker != null){
+			mImageWorker.setImageSize(width, height);
+		}
+	}
+
+	/**设置圆角的弧度
+	 * @param isround
+	 */
+	public void setRound(int roundPx) {
+		mImageWorker.setRoound(true);
+		mImageWorker.setRoundPx(roundPx);
 	}
 }

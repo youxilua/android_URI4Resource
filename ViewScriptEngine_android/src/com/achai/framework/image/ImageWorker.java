@@ -6,6 +6,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,9 +38,12 @@ public abstract class ImageWorker {
 	private Bitmap mLoadingBitmap;
 	// 淡出图片
 	private boolean mFadeInBitmap = true;
+
 	public void setmFadeInBitmap(boolean mFadeInBitmap) {
 		this.mFadeInBitmap = mFadeInBitmap;
 	}
+
+	
 
 	// 是否尽早推出task任务
 	private boolean mExitTasksEarly = false;
@@ -56,10 +66,13 @@ public abstract class ImageWorker {
 		} else if (cancelPotentialWork(data, imageview)) {
 			// 4,获取一个bitmap 的异步操作
 			final BitmapWorkerTask task = new BitmapWorkerTask(imageview);
-			// 5,设置尚未下载的图片
+			// // 5,设置尚未下载的图片
 			final AsyncDrawable asyncDrawable = new AsyncDrawable(
 					mContext.getResources(), mLoadingBitmap, task);
+			// BitmapDrawable bd = new BitmapDrawable(mLoadingBitmap);
+
 			imageview.setImageDrawable(asyncDrawable);
+			// imageview.setImageBitmap(asyncDrawable);
 			// 6,开始后台执行
 			task.execute(data);
 		}
@@ -223,6 +236,7 @@ public abstract class ImageWorker {
 	 * @param bitmap
 	 */
 	private void setImageBitmap(ImageView imageView, Bitmap bitmap) {
+
 		// 是否淡出图片
 		if (mFadeInBitmap) {
 			// Transition drawable with a transparent drwabale and the final

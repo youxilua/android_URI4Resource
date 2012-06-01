@@ -4,12 +4,19 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Bitmap.Config;
+import android.graphics.PorterDuff.Mode;
 import android.util.Log;
 
 import com.achai.framework.debug.BuildConfig;
 
 /**
- * 用于调整图片的大小
+ * 用于调整图片的大小 圆角等
  * 
  * @author tom_achai
  * 
@@ -18,6 +25,44 @@ public class ImageResizer extends ImageWorker {
 	private static final String TAG = "ImageWorker";
 	protected int mImageWidth;
 	protected int mImageHeight;
+	protected boolean isScale = false;
+
+	// 设置是否图片圆角
+	protected boolean isRound = false;
+	//默认圆角弧度
+	protected int roundPx = 10;
+	
+	public void setRoundPx(int roundPx) {
+		this.roundPx = roundPx;
+	}
+
+	public void setRoound(boolean isRoound) {
+		this.isRound = isRoound;
+	}
+
+	public void setmNeedScale(boolean mNeedScale) {
+		this.isScale = mNeedScale;
+	}
+
+	public static Bitmap setImageRound(Bitmap bitmap, int roundPx) {
+
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF = new RectF(rect);
+		// 圆角大小
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+
+		return output;
+	}
 
 	/**
 	 * @param context
@@ -104,6 +149,7 @@ public class ImageResizer extends ImageWorker {
 
 	/**
 	 * 返回一个正方形的图片大小
+	 * 
 	 * @param options
 	 * @param reqWidth
 	 * @param reqHeight
@@ -114,8 +160,8 @@ public class ImageResizer extends ImageWorker {
 		// Raw height and width of image
 		final int height = options.outHeight;
 		final int width = options.outWidth;
-//		final int height = options.outHeight;
-//		final int width = options.outWidth;
+		// final int height = options.outHeight;
+		// final int width = options.outWidth;
 		int inSampleSize = 1;
 
 		if (height > reqHeight || width > reqWidth) {
