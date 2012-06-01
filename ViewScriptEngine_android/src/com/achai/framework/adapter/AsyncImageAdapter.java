@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -55,6 +56,11 @@ public class AsyncImageAdapter extends BaseAdapter {
 	private int asyncResid;
 
 	private Bitmap mLoadingBitmap;
+	//是否需要奇偶列
+	private boolean isOddEven  = false;
+	
+	private int oddColor;
+	private int evenColor;
 
 	/**
 	 * 是否进行缩放
@@ -189,6 +195,15 @@ public class AsyncImageAdapter extends BaseAdapter {
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
+		}
+		if(isOddEven){
+			if(position % 2 == 0){
+				//这个是奇数行
+				convertView.setBackgroundColor(oddColor); 
+			}else{
+				//这个是偶数行
+				convertView.setBackgroundColor(evenColor);
+			}
 		}
 
 		if (mTo != null) {
@@ -364,5 +379,14 @@ public class AsyncImageAdapter extends BaseAdapter {
 	public void setRound(int roundPx) {
 		mImageWorker.setRoound(true);
 		mImageWorker.setRoundPx(roundPx);
+	}
+	
+	/**
+	 *设置奇偶行的颜色 
+	 */
+	public void setOddEven(int odd, int even){
+		isOddEven = true;
+		this.oddColor = odd;
+		this.evenColor = even;
 	}
 }
