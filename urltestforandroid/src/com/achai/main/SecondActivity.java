@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ListActivity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
@@ -42,8 +43,8 @@ public class SecondActivity extends ListActivity {
 		
 		AsyncImageAdapter aia = new AsyncImageAdapter(this, map_list,
 				R.layout.tag_listview_item,R.drawable.ic_launcher);
-		aia.setRound(100);
-		
+		aia.setRound(10);
+		aia.setOddEven(Color.BLACK, Color.WHITE);
 		setListAdapter(aia);
 		
 		
