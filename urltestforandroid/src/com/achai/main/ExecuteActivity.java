@@ -35,7 +35,7 @@ public class ExecuteActivity extends GraphivzLogActivity implements ExecTagListe
 //		//i.setClassName("com.achai", "com.achai.main.TargetActivity");
 //		
 		View root = getRootView();
-		initTagCmd.checkTagView(root);
+		//initTagCmd.checkTagView(root);
 	//	Intent targetIntent = new Intent().setClass(this, TargetActivity.class);
 //		ComponentName cn = new ComponentName("com.achai", "com.achai.main.TargetActivity");
 //		targetIntent.setComponent(cn);
