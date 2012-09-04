@@ -71,25 +71,22 @@ public class SharedCacheFactory {
 
 		if (value instanceof String) {
 			insertCache.putString(key, (String) value);
-			insertCache.commit();
-			return;
+		
+		
 		} else if (value instanceof Integer) {
 			insertCache.putInt(key, (Integer) value);
-			insertCache.commit();
-			return;
+		
 		} else if (value instanceof Long) {
 			insertCache.putLong(key, (Long) value);
-			insertCache.commit();
-			return;
+		
 		} else if (value instanceof Float) {
 			insertCache.putFloat(key, (Float) value);
-			insertCache.commit();
-			return;
+		
 		} else if (value instanceof Boolean) {
 			insertCache.putBoolean(key, (Boolean) value);
-			insertCache.commit();
-			return;
+		
 		}
+			insertCache.commit();
 	}
 
 	public void setSharedCache(Context ctx, String key, Object value) {
